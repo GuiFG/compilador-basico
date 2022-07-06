@@ -1,0 +1,35 @@
+programa 
+    numero a, b;
+    texto t1;
+
+    leia(a);
+    leia(b);
+     
+    a = 1 + 2 * 3 / b;
+    escreva(a);
+    escreva(b);
+
+    se (a > b) {
+        escreva(a);
+    } senao {
+        escreva(b);
+    }
+
+    se (t1 == a) {
+        escreva(t1);
+    }
+
+    se (a == b) {
+        se (t1 == a) {
+            se (b == t1) {
+                escreva(a);
+            }
+            senao {
+                escreva(b);
+            }
+        }
+
+        escreva(t1);
+    }
+
+fimprog;
