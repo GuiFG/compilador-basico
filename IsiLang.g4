@@ -11,6 +11,7 @@ grammar IsiLang;
     import br.com.isilanguage.ast.CommandEscrita;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
+    import br.com.isilanguage.ast.CommandRepeticao;
     import java.util.ArrayList;
     import java.util.Stack;
 }
@@ -30,6 +31,10 @@ grammar IsiLang;
     private ArrayList<AbstractCommand> lstTrue;
     private ArrayList<AbstractCommand> lstFalse;
     private int depth = 0;
+    
+    private String _exprLoop;
+    private Stack<String> stackLoop = new Stack<String>();
+    private ArrayList<AbstractCommand> loopCommands;
 
     private IsiSymbolTable symbolTable = new IsiSymbolTable();
     private IsiSymbol symbol;
@@ -96,6 +101,7 @@ cmd     :
     | cmdescrita 
     | cmdattrib 
     | cmdselecao
+    | cmdrepeticao
     ;
 
 cmdleitura : 'leia' AP 
@@ -111,7 +117,7 @@ cmdescrita : 'escreva' AP
                        ID { _writeID = _input.LT(-1).getText(); checkId(_writeID); } 
                        FP 
                        SC {
-                            IsiVariable var =  (IsiVariable)symbolTable.get(_readID);
+                            IsiVariable var =  (IsiVariable)symbolTable.get(_writeID);
                             CommandEscrita cmd = new CommandEscrita(_writeID, var);
                             stack.peek().add(cmd);
                        }
@@ -164,6 +170,32 @@ cmdselecao : 'se' AP
                 depth -= 1;
             }
            ;
+
+cmdrepeticao : 'enquanto' 
+                AP 
+                ID { _exprLoop = _input.LT(-1).getText(); }
+                OPREL { _exprLoop += _input.LT(-1).getText(); }
+                (ID | NUMBER) { _exprLoop += _input.LT(-1).getText(); }
+                FP 
+                ACH  
+                {
+                    depth += 1;
+                    currentThread = new ArrayList<AbstractCommand>();
+                    stack.push(currentThread);
+
+                    stackLoop.push(_exprLoop);
+                }
+                (cmd)+
+                FCH
+                {
+                    loopCommands = stack.pop();
+                    _exprLoop = stackLoop.pop();
+                    CommandRepeticao cmd = new CommandRepeticao(_exprLoop, loopCommands, depth);
+                    stack.peek().add(cmd);
+                    loopCommands = null;
+                    depth -= 1;
+                }
+                ;
 
 expr       : termo ( 
                 OP { _exprContent += _input.LT(-1).getText(); }

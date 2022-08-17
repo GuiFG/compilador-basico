@@ -20,7 +20,7 @@ public class CommandEscrita extends AbstractCommand {
     public String generateCodeInC() {
         String format = var.getType() == IsiVariable.NUMBER ? "%lf" : "%s";
         
-        return "printf(\"" + format + "\", " + id + ");";
+        return "printf(\"" + format + "\", " + id + ");\r";
     }
     @Override
     public CommandType getType() {

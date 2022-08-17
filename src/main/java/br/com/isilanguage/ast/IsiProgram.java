@@ -32,6 +32,7 @@ public class IsiProgram {
         
         try 
         {
+            System.out.println(str.toString());
             WriteCodeInFile(str.toString());
         }
         catch (IOException ex)

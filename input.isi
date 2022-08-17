@@ -32,4 +32,14 @@ programa
         escreva(t1);
     }
 
+    enquanto (a == c) {
+        escreva(b);
+
+        se (t1 == a) {
+            escreva(t1);
+        } senao {
+            leia(a);
+        }
+    }
+
 fimprog;

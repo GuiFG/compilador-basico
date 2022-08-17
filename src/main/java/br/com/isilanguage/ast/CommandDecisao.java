@@ -1,6 +1,7 @@
 package br.com.isilanguage.ast;
 
 import java.util.ArrayList;
+import br.com.isilanguage.utils.Util;
 
 public class CommandDecisao extends AbstractCommand {
     private final String condition;
@@ -28,19 +29,19 @@ public class CommandDecisao extends AbstractCommand {
     @Override
     public String generateCodeInC() {
         StringBuilder str = new StringBuilder();
-        str.append(getTabs(depth))
+        str.append(Util.getTabs(depth))
            .append("if (").append(condition)
            .append(") {\n");
         
         str.append(AppendCommands(lstTrue));
-        str.append("\n").append(getTabs(depth))
+        str.append("\n").append(Util.getTabs(depth))
             .append("}");
         
         if (lstFalse != null && !lstFalse.isEmpty()) {
             str.append(" else {\n");
             str.append(AppendCommands(lstFalse));
             str.append("\n")
-               .append(getTabs(depth))
+               .append(Util.getTabs(depth))
                .append("}");
         } else {
             str.append("\n");
@@ -54,20 +55,12 @@ public class CommandDecisao extends AbstractCommand {
         StringBuilder str = new StringBuilder();
         for (AbstractCommand cmd: list) {
             if (cmd.getType() != CommandType.DECISAO)
-                str.append(getTabs(depth+1)).append(cmd.generateCodeInC());
+                str.append(Util.getTabs(depth+1)).append(cmd.generateCodeInC());
             else {
                 str.append(cmd.generateCodeInC());
             }
                 
         }
-        
-        return str.toString();
-    }
-    
-    private String getTabs(int total) {
-        StringBuilder str = new StringBuilder();
-        for (int i = 0; i < total; i++)
-            str.append("\t");
         
         return str.toString();
     }

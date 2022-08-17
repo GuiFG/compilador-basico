@@ -22,7 +22,7 @@ public class CommandLeitura extends AbstractCommand {
     public String generateCodeInC() {
         String format = var.getType() == IsiVariable.NUMBER ? "%lf" : "%s";
         
-        return "scanf(\"" + format + "\", " + id + ");";
+        return "scanf(\"" + format + "\", " + id + ");\r";
    }
     
     @Override
