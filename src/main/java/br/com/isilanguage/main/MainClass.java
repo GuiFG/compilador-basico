@@ -22,7 +22,9 @@ public class MainClass {
             
             parser.prog();
             
-            System.out.println("Compilation Successful");
+            parser.checkWarnings();
+            
+            System.out.println("Compilation Successful!");
             
             parser.showCommands();
             

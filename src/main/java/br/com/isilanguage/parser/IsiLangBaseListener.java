@@ -5,6 +5,7 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.datastructures.IsiVariable;
     import br.com.isilanguage.datastructures.IsiSymbolTable;
     import br.com.isilanguage.exceptions.IsiSemanticException;
+    import br.com.isilanguage.exceptions.Warning;
     import br.com.isilanguage.ast.IsiProgram;
     import br.com.isilanguage.ast.AbstractCommand;
     import br.com.isilanguage.ast.CommandLeitura;
@@ -12,6 +13,7 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
+    
     import java.util.ArrayList;
     import java.util.Stack;
 

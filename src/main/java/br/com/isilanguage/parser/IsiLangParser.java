@@ -5,6 +5,7 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.datastructures.IsiVariable;
     import br.com.isilanguage.datastructures.IsiSymbolTable;
     import br.com.isilanguage.exceptions.IsiSemanticException;
+    import br.com.isilanguage.exceptions.Warning;
     import br.com.isilanguage.ast.IsiProgram;
     import br.com.isilanguage.ast.AbstractCommand;
     import br.com.isilanguage.ast.CommandLeitura;
@@ -12,6 +13,7 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
+    
     import java.util.ArrayList;
     import java.util.Stack;
 
@@ -137,9 +139,25 @@ public class IsiLangParser extends Parser {
 	            throw new IsiSemanticException("Symbol '" + _varName + "' already declared");
 	    }
 
+	    private void updateSymbolValue(String id, String value) {
+	        IsiVariable var = (IsiVariable) symbolTable.get(id);
+
+	        var.setValue(value);
+	    }
+
 	    private void checkId(String id) {
 	        if (!symbolTable.exists(id)) 
 	            throw new IsiSemanticException("Symbol '" + id + "' not declared");
+	    }
+
+	    public void checkWarnings() {
+	        for (IsiSymbol symbol : symbolTable.getAll()) {
+	            IsiVariable var = (IsiVariable) symbol;
+	            String value = var.getValue();
+	            if (value == null) {
+	                IsiSemanticException.showWarning(Warning.UNASSIGNED_VARIABLE, var.getName());
+	            }
+	        };
 	    }
 
 	    public void showCommands() {
@@ -678,6 +696,7 @@ public class IsiLangParser extends Parser {
 			setState(90);
 			match(SC);
 
+			                updateSymbolValue(_exprID, _exprContent);
 			                CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
 			                stack.peek().add(cmd);
 			             
