@@ -3,6 +3,8 @@ int main(){
 	double a;
 	double b;
 	double c;
+	bool l1;
+	bool l2;
 	char t1[];
 	char t2[];
 	scanf("%lf", a);
@@ -38,4 +40,8 @@ int main(){
 			scanf("%lf", a);
 		}
 	}
+	if (l2!=l1) {
+		scanf("%s", l1);
+	}
+
 }

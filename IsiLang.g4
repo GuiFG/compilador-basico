@@ -129,6 +129,7 @@ grammar IsiLang;
         String name = switch (type) {
                 case IsiVariable.NUMBER -> "numero";
                 case IsiVariable.TEXT -> "texto";
+                case IsiVariable.BOOL -> "logico";
                 default -> "tipo desconhecido " + type;
         };
 	        
@@ -174,6 +175,7 @@ declaravar : tipo ID { addSymbol(_input.LT(-1).getText()); }
 
 tipo    : 'numero' { _tipo = IsiVariable.NUMBER; }
         | 'texto'  { _tipo = IsiVariable.TEXT;  }
+        | 'logico' { _tipo = IsiVariable.BOOL; }
         ;
 
 bloco   : { currentThread = new ArrayList<AbstractCommand>(); 
@@ -330,6 +332,11 @@ termo      : ID { String text = _input.LT(-1).getText();
                 checkType(_typeVar, IsiVariable.TEXT); 
                 updateComparisonTypeVariables(IsiVariable.TEXT);
             } 
+           | BOOL {
+                _exprContent += _input.LT(-1).getText();
+                checkType(_typeVar, IsiVariable.BOOL);
+                updateComparisonTypeVariables(IsiVariable.BOOL);
+           } 
            ;
 
 
@@ -363,5 +370,7 @@ NUMBER  : [0-9]+ ('.' [0-9]+)?
 
 TEXT : ["] ([a-zA-Z0-9.,!?$%#@&*() ])* ["] 
      ;
+
+BOOL : 'verdadeiro' | 'falso'; 
     
 WS : (' ' | '\t' | '\n' | '\r') -> skip;

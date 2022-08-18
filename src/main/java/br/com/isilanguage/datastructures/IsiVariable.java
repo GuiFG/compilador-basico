@@ -4,6 +4,7 @@ package br.com.isilanguage.datastructures;
 public class IsiVariable extends IsiSymbol {
     public static final int NUMBER = 0;
     public static final int TEXT = 1;
+    public static final int BOOL = 2;
     
     private int type;
     private String value;
@@ -37,13 +38,13 @@ public class IsiVariable extends IsiSymbol {
 
     @Override
     public String generateCodeInC() {
-        String str;
-        if (type == NUMBER) {
-            str = "double " + super.name;
-        } else {
-            str = "char " + super.name + "[]";
-        }
-        
+        String str = switch (type) {
+            case IsiVariable.NUMBER -> "double " + super.name;
+            case IsiVariable.TEXT -> "char " + super.name + "[]";
+            case IsiVariable.BOOL -> "bool " + super.name;
+            default -> "tipo desconhecido " + type;
+        };
+	        
         return str + ";";
     }
 }

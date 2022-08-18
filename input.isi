@@ -2,6 +2,8 @@ programa
     numero a, b, c;
     texto t1;
     texto t2;
+    logico l1;
+    logico l2;
 
     leia(a);
     leia(b);
@@ -42,6 +44,10 @@ programa
         } senao {
             leia(a);
         }
+    }
+
+    se (l2 != l1) {
+        leia(l1);
     }
 
 fimprog;
