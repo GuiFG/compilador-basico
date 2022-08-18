@@ -1,11 +1,13 @@
 programa 
-    numero a, b;
+    numero a, b, c;
     texto t1;
+    texto t2;
 
     leia(a);
     leia(b);
      
     a = 1 + 2 * 3 / b;
+    t1 = "ola tudo bom" + "42";
     escreva(a);
     escreva(b);
 
@@ -15,13 +17,13 @@ programa
         escreva(b);
     }
 
-    se (t1 == a) {
+    se (t1 == t2) {
         escreva(t1);
     }
 
     se (a == b) {
-        se (t1 == a) {
-            se (b == t1) {
+        se (t1 == t2) {
+            se (b == c) {
                 escreva(a);
             }
             senao {
@@ -35,7 +37,7 @@ programa
     enquanto (a == c) {
         escreva(b);
 
-        se (t1 == a) {
+        se (t1 != t2) {
             escreva(t1);
         } senao {
             leia(a);

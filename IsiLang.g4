@@ -27,12 +27,17 @@ grammar IsiLang;
     private String _writeID;
     private String _exprID;
     private String _exprContent;
+    private int _typeVar; 
 
     private String _exprDecision;
     private Stack<String> stackDecision = new Stack<String>();
     private ArrayList<AbstractCommand> lstTrue;
     private ArrayList<AbstractCommand> lstFalse;
     private int depth = 0;
+    private int typeVar1;
+    private int typeVar2;
+    private String termo1;
+    private String termo2;
     
     private String _exprLoop;
     private Stack<String> stackLoop = new Stack<String>();
@@ -68,13 +73,75 @@ grammar IsiLang;
             throw new IsiSemanticException("Symbol '" + id + "' not declared");
     }
 
+    private void checkType(int type, int expected) {
+        if (type == -1)
+            return;
+
+        if (type != expected)
+            throw new IsiSemanticException("Symbol '" + _exprID + "' com tipo incompativel. Valor = " + _exprContent);
+    }
+
+    private void checkTypeId(int type, String id) {
+        if (type == -1)
+            return;
+
+        if (type != getTypeVariable(id))
+            throw new IsiSemanticException("Symbol '" + _exprID + "' nao pode ser a relacionado com a variavel '" + id + "'");
+    }
+
+    private void checkTypeOperator(int type, String operator) 
+    {
+        if (type == -1)
+            return;
+
+        if (type == IsiVariable.TEXT && !operator.equals("+"))
+            throw new IsiSemanticException("Operador '" + operator + "' nao permitido para a variavel '" + _exprID + "' do tipo 'texto'");
+    }
+
+    private int getTypeVariable(String id) {
+        IsiVariable var = (IsiVariable) symbolTable.get(id);
+        return var.getType();
+    }
+
+    private void updateComparisonTypeVariables(String id) {
+        int type = getTypeVariable(id);
+        updateComparisonTypeVariables(type);
+    }
+
+    private void updateComparisonTypeVariables(int type) {
+        if (typeVar1 == -1)
+            typeVar1 = type;    
+        else 
+            typeVar2 = type;
+    }
+
+    private void checkComparisonTypes() {
+        if (typeVar1 != typeVar2) {
+            String message = 
+                String.format(
+                    "Comando de comparacao com tipos incompativeis em relacao aos termos '%s' (%s) e '%s' (%s)",
+                    termo1, getNameType(typeVar1), termo2, getNameType(typeVar2));
+            throw new IsiSemanticException(message);
+        }
+    }
+
+    private String getNameType(int type) {
+        String name = switch (type) {
+                case IsiVariable.NUMBER -> "numero";
+                case IsiVariable.TEXT -> "texto";
+                default -> "tipo desconhecido " + type;
+        };
+	        
+        return name;
+    }
+
     public void checkWarnings() {
         for (IsiSymbol symbol : symbolTable.getAll()) {
             IsiVariable var = (IsiVariable) symbol;
             String value = var.getValue();
             if (value == null) {
                 IsiSemanticException.showWarning(Warning.UNASSIGNED_VARIABLE, var.getName());
-            }
+            } 
         };
     }
 
@@ -140,21 +207,35 @@ cmdescrita : 'escreva' AP
                             stack.peek().add(cmd);
                        }
            ;
-cmdattrib  : ID { _exprID = _input.LT(-1).getText(); checkId(_exprID); }
+cmdattrib  : ID { 
+                    _exprID = _input.LT(-1).getText(); 
+                    checkId(_exprID); 
+                    _typeVar = getTypeVariable(_exprID);
+                }
              ATTR { _exprContent = ""; }
              expr 
              SC {
                 updateSymbolValue(_exprID, _exprContent);
                 CommandAtribuicao cmd = new CommandAtribuicao(_exprID, _exprContent);
                 stack.peek().add(cmd);
+                _typeVar = -1;
+                _exprContent = "";
              }
            ;
 
-cmdselecao : 'se' AP 
-                  ID { _exprDecision = _input.LT(-1).getText(); }
+cmdselecao : 'se' AP { typeVar1 = -1; typeVar2 = -1; }
+                  termo  { 
+                    String text = _input.LT(-1).getText(); 
+                    termo1 = text;
+                    _exprDecision = text;
+                }
                   OPREL { _exprDecision += _input.LT(-1).getText(); }
-                  (ID | NUMBER) { _exprDecision += _input.LT(-1).getText(); }
-                  FP 
+                  termo { 
+                    text = _input.LT(-1).getText(); 
+                    termo2 = text;
+                    _exprDecision += text;
+                  }
+                  FP { checkComparisonTypes(); }
                   ACH 
                   {
                     depth += 1;
@@ -191,11 +272,19 @@ cmdselecao : 'se' AP
            ;
 
 cmdrepeticao : 'enquanto' 
-                AP 
-                ID { _exprLoop = _input.LT(-1).getText(); }
+                AP { typeVar1 = -1; typeVar2 = -1; }
+                termo { 
+                    String text = _input.LT(-1).getText(); 
+                    termo1 = text;
+                    _exprLoop = text;
+                }
                 OPREL { _exprLoop += _input.LT(-1).getText(); }
-                (ID | NUMBER) { _exprLoop += _input.LT(-1).getText(); }
-                FP 
+                termo { 
+                    text = _input.LT(-1).getText(); 
+                    termo2 = text;
+                    _exprLoop += text;
+                }
+                FP { checkComparisonTypes(); }
                 ACH  
                 {
                     depth += 1;
@@ -217,17 +306,32 @@ cmdrepeticao : 'enquanto'
                 ;
 
 expr       : termo ( 
-                OP { _exprContent += _input.LT(-1).getText(); }
+                OP { 
+                    String content = _input.LT(-1).getText(); 
+                    checkTypeOperator(_typeVar, content); 
+                    _exprContent += content;
+                }
                 termo 
             )*
            ;
-termo      : ID { String text = _input.LT(-1).getText(); checkId(text);
-                  _exprContent += text; 
+termo      : ID { String text = _input.LT(-1).getText(); 
+                    checkId(text);
+                    checkTypeId(_typeVar, text);
+                    _exprContent += text; 
+                    updateComparisonTypeVariables(text);
              } 
-           | NUMBER {
-                _exprContent += _input.LT(-1).getText();
-           }
+           | NUMBER { 
+                _exprContent += _input.LT(-1).getText(); 
+                checkType(_typeVar, IsiVariable.NUMBER); 
+                updateComparisonTypeVariables(IsiVariable.NUMBER);
+            }
+           | TEXT { 
+                _exprContent += _input.LT(-1).getText(); 
+                checkType(_typeVar, IsiVariable.TEXT); 
+                updateComparisonTypeVariables(IsiVariable.TEXT);
+            } 
            ;
+
 
 AP  : '('
     ;
@@ -256,4 +360,8 @@ OPREL : '>' | '<' | '>=' | '<=' | '==' | '!='
 
 NUMBER  : [0-9]+ ('.' [0-9]+)?
         ;
+
+TEXT : ["] ([a-zA-Z0-9.,!?$%#@&*() ])* ["] 
+     ;
+    
 WS : (' ' | '\t' | '\n' | '\r') -> skip;
