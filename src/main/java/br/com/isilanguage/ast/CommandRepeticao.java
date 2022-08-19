@@ -20,7 +20,7 @@ public class CommandRepeticao extends AbstractCommand {
     
     @Override
     public String toString() {
-        return "CommandRepeticao{" + "condition=" + condition + ", lstCommands=" + lstCommands;
+        return "CommandRepeticao{" + "condition=" + condition + ", lstCommands=" + lstCommands + '}';
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CommandRepeticao extends AbstractCommand {
         str.append(AppendCommands(lstCommands));
         str.append("\n")
            .append(Util.getTabs(depth))
-           .append("}");
+           .append("}\r");
         
         return str.toString();
     }

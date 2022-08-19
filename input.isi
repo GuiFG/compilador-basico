@@ -2,12 +2,16 @@ programa
     numero a, b, c;
     texto t1;
     texto t2;
+    logico l1;
+    logico l2;
+    numero opcao;
 
     leia(a);
     leia(b);
      
     a = 1 + 2 * 3 / b;
     t1 = "ola tudo bom" + "42";
+    opcao = 3;
     escreva(a);
     escreva(b);
 
@@ -42,6 +46,20 @@ programa
         } senao {
             leia(a);
         }
+    }
+
+    se (l2 != l1) {
+        leia(l1);
+    }
+
+    escolha (opcao)
+    {
+        caso 1:
+            escreva(b);
+        caso 5:
+            leia(t1);
+        outrocaso:
+            escreva(a);
     }
 
 fimprog;

@@ -13,9 +13,11 @@ grammar IsiLang;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
+    import br.com.isilanguage.ast.CommandSwitch;
     
     import java.util.ArrayList;
     import java.util.Stack;
+    import java.util.HashMap;
 }
 
 @members {
@@ -42,6 +44,10 @@ grammar IsiLang;
     private String _exprLoop;
     private Stack<String> stackLoop = new Stack<String>();
     private ArrayList<AbstractCommand> loopCommands;
+
+    private String caseExpression;
+    private int countCase = 0;
+    private Stack<String> stackCaseTerms = new Stack<String>();
 
     private IsiSymbolTable symbolTable = new IsiSymbolTable();
     private IsiSymbol symbol;
@@ -129,10 +135,27 @@ grammar IsiLang;
         String name = switch (type) {
                 case IsiVariable.NUMBER -> "numero";
                 case IsiVariable.TEXT -> "texto";
+                case IsiVariable.BOOL -> "logico";
                 default -> "tipo desconhecido " + type;
         };
 	        
         return name;
+    }
+
+    private HashMap<String, ArrayList<AbstractCommand>> getCasesCommands(
+        Stack<ArrayList<AbstractCommand>> stack, 
+        Stack<String> stackCaseTerms,
+        int countCase
+    )
+    {
+        HashMap<String, ArrayList<AbstractCommand>> cases = new HashMap<String, ArrayList<AbstractCommand>>();
+        for (int i = 0; i < countCase; i++) {
+            ArrayList<AbstractCommand> commands = stack.pop();
+            String term = stackCaseTerms.pop();
+            cases.put(term, commands);
+        }
+
+        return cases;
     }
 
     public void checkWarnings() {
@@ -174,6 +197,7 @@ declaravar : tipo ID { addSymbol(_input.LT(-1).getText()); }
 
 tipo    : 'numero' { _tipo = IsiVariable.NUMBER; }
         | 'texto'  { _tipo = IsiVariable.TEXT;  }
+        | 'logico' { _tipo = IsiVariable.BOOL; }
         ;
 
 bloco   : { currentThread = new ArrayList<AbstractCommand>(); 
@@ -187,6 +211,7 @@ cmd     :
     | cmdattrib 
     | cmdselecao
     | cmdrepeticao
+    | cmdswitch
     ;
 
 cmdleitura : 'leia' AP 
@@ -305,6 +330,43 @@ cmdrepeticao : 'enquanto'
                 }
                 ;
 
+cmdswitch : 'escolha' 
+            AP ID { 
+                caseExpression = _input.LT(-1).getText(); 
+                checkId(caseExpression); 
+                _typeVar = getTypeVariable(caseExpression);
+            } 
+            FP 
+            ACH 
+            (
+                'caso' 
+                termo { 
+                    _exprContent = ""; 
+                    stackCaseTerms.push(_input.LT(-1).getText()); 
+                } 
+                DP { 
+                    currentThread = new ArrayList<AbstractCommand>();
+                    stack.push(currentThread);
+                    countCase += 1;
+                } 
+                
+                (cmd)+ 
+            )+ 
+            'outrocaso' { stackCaseTerms.push("outrocaso"); }
+            DP {
+                currentThread = new ArrayList<AbstractCommand>();
+                stack.push(currentThread);
+                countCase += 1;
+            } 
+            (cmd)+ 
+            FCH {
+                HashMap<String, ArrayList<AbstractCommand>> cases = getCasesCommands(stack, stackCaseTerms, countCase);
+                CommandSwitch cmd = new CommandSwitch(caseExpression, cases);
+                stack.peek().add(cmd);
+                _typeVar = -1;
+            }
+        ;
+
 expr       : termo ( 
                 OP { 
                     String content = _input.LT(-1).getText(); 
@@ -330,6 +392,11 @@ termo      : ID { String text = _input.LT(-1).getText();
                 checkType(_typeVar, IsiVariable.TEXT); 
                 updateComparisonTypeVariables(IsiVariable.TEXT);
             } 
+           | BOOL {
+                _exprContent += _input.LT(-1).getText();
+                checkType(_typeVar, IsiVariable.BOOL);
+                updateComparisonTypeVariables(IsiVariable.BOOL);
+           } 
            ;
 
 
@@ -338,6 +405,8 @@ AP  : '('
 FP  : ')'
     ;
 SC  : ';'
+    ;
+DP  : ':'
     ;
 OP  : '+' | '-' | '*' | '/'
     ;
@@ -363,5 +432,7 @@ NUMBER  : [0-9]+ ('.' [0-9]+)?
 
 TEXT : ["] ([a-zA-Z0-9.,!?$%#@&*() ])* ["] 
      ;
+
+BOOL : 'verdadeiro' | 'falso'; 
     
 WS : (' ' | '\t' | '\n' | '\r') -> skip;

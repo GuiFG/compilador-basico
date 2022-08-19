@@ -6,6 +6,7 @@ public enum CommandType {
     ATTR,
     DECISAO,
     REPETICAO,
+    SWITCH,
     ESCRITA,
     LEITURA
 }
