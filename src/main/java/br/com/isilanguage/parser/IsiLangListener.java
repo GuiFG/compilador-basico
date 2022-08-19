@@ -13,9 +13,11 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
+    import br.com.isilanguage.ast.CommandSwitch;
     
     import java.util.ArrayList;
     import java.util.Stack;
+    import java.util.HashMap;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -134,6 +136,16 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmdrepeticao(IsiLangParser.CmdrepeticaoContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdswitch}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdswitch(IsiLangParser.CmdswitchContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdswitch}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdswitch(IsiLangParser.CmdswitchContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#expr}.
 	 * @param ctx the parse tree

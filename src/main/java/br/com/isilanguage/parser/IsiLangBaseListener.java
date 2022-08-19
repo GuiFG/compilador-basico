@@ -13,9 +13,11 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
+    import br.com.isilanguage.ast.CommandSwitch;
     
     import java.util.ArrayList;
     import java.util.Stack;
+    import java.util.HashMap;
 
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -160,6 +162,18 @@ public class IsiLangBaseListener implements IsiLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCmdrepeticao(IsiLangParser.CmdrepeticaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdswitch(IsiLangParser.CmdswitchContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdswitch(IsiLangParser.CmdswitchContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

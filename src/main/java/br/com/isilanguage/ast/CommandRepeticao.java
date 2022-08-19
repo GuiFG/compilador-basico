@@ -20,7 +20,7 @@ public class CommandRepeticao extends AbstractCommand {
     
     @Override
     public String toString() {
-        return "CommandRepeticao{" + "condition=" + condition + ", lstCommands=" + lstCommands;
+        return "CommandRepeticao{" + "condition=" + condition + ", lstCommands=" + lstCommands + '}';
     }
 
     @Override
