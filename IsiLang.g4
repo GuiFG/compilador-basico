@@ -15,6 +15,8 @@ grammar IsiLang;
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
     import br.com.isilanguage.ast.CommandBreak;
+    import br.com.isilanguage.ast.CommandContinue;
+    import br.com.isilanguage.ast.CommandType;
     
     import java.util.ArrayList;
     import java.util.Stack;
@@ -45,6 +47,8 @@ grammar IsiLang;
     private String _exprLoop;
     private Stack<String> stackLoop = new Stack<String>();
     private ArrayList<AbstractCommand> loopCommands;
+    private Boolean _breakOk = false;
+    private Boolean _continueOk = false;
 
     private String caseExpression;
     private int countCase = 0;
@@ -103,6 +107,18 @@ grammar IsiLang;
 
         if (type == IsiVariable.TEXT && !operator.equals("+"))
             throw new IsiSemanticException("Operador '" + operator + "' nao permitido para a variavel '" + _exprID + "' do tipo 'texto'");
+    }
+
+    private void checkBreak()
+    {   
+        if (!_breakOk)
+            throw new IsiSemanticException("Comando 'parar' deve ser usado dentro de um estrutura de repeticao ou de escolha");
+    }
+
+    private void checkContinue()
+    {   
+        if (!_continueOk)
+            throw new IsiSemanticException("Comando 'continue' deve ser usado dentro de um estrutura de repeticao");
     }
 
     private int getTypeVariable(String id) {
@@ -213,6 +229,8 @@ cmd     :
     | cmdselecao
     | cmdrepeticao
     | cmdswitch
+    | cmdBreak
+    | cmdContinue
     ;
 
 cmdleitura : 'leia' AP 
@@ -298,7 +316,7 @@ cmdselecao : 'se' AP { typeVar1 = -1; typeVar2 = -1; }
            ;
 
 cmdrepeticao : 'enquanto' 
-                AP { typeVar1 = -1; typeVar2 = -1; }
+                AP { typeVar1 = -1; typeVar2 = -1; _breakOk = true; _continueOk = true; }
                 termo { 
                     String text = _input.LT(-1).getText(); 
                     termo1 = text;
@@ -328,6 +346,8 @@ cmdrepeticao : 'enquanto'
                     stack.peek().add(cmd);
                     loopCommands = null;
                     depth -= 1;
+                    _breakOk = false;
+                    _continueOk = false;
                 }
                 ;
 
@@ -336,6 +356,7 @@ cmdswitch : 'escolha'
                 caseExpression = _input.LT(-1).getText(); 
                 checkId(caseExpression); 
                 _typeVar = getTypeVariable(caseExpression);
+                _breakOk = true;
             } 
             FP 
             ACH 
@@ -351,8 +372,8 @@ cmdswitch : 'escolha'
                     countCase += 1;
                 } 
                 
-                (cmd)+ 
-                ('parar' { CommandBreak cmdBreak = new CommandBreak(); stack.peek().add(cmdBreak); }  SC)? 
+                (cmdleitura | cmdescrita | cmdattrib | cmdselecao | cmdrepeticao | cmdswitch)+ 
+                (cmdBreak)?
             )+ 
             'outrocaso' { stackCaseTerms.push("outrocaso"); }
             DP {
@@ -366,8 +387,15 @@ cmdswitch : 'escolha'
                 CommandSwitch cmd = new CommandSwitch(caseExpression, cases);
                 stack.peek().add(cmd);
                 _typeVar = -1;
+                _breakOk = false;
             }
         ;
+
+cmdBreak : 'parar' SC { checkBreak(); CommandBreak cmdBreak = new CommandBreak(); stack.peek().add(cmdBreak); }
+      ;
+
+cmdContinue : 'continuar' SC { checkContinue(); CommandContinue cmdContinue = new CommandContinue(); stack.peek().add(cmdContinue); }
+      ;
 
 expr       : termo ( 
                 OP { 
@@ -414,6 +442,7 @@ OP  : '+' | '-' | '*' | '/'
     ;
 ATTR : '='
      ;
+
 ID : [a-z] ([a-z] | [A-Z] | [0-9])*
    ;
 
@@ -435,6 +464,6 @@ NUMBER  : [0-9]+ ('.' [0-9]+)?
 TEXT : ["] ([a-zA-Z0-9.,!?$%#@&*() ])* ["] 
      ;
 
-BOOL : 'verdadeiro' | 'falso';       
+BOOL : 'verdadeiro' | 'falso';    
     
 WS : (' ' | '\t' | '\n' | '\r') -> skip;

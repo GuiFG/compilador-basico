@@ -23,7 +23,6 @@ int main(){
 	if (t1==t2) {
 		printf("%s", t1);
 	}
-
 	if (a==b) {
 		if (t1==t2) {
 			if (b==c) {
@@ -31,20 +30,21 @@ int main(){
 			} else {
 				printf("%lf", b);
 			}
-		}
-		printf("%s", t1);
+		}		printf("%s", t1);
 	}
-
 	while (a==c) {
 		printf("%lf", b);		if (t1!=t2) {
-			printf("%s", t1);
+			printf("%s", t1);			break;
 		} else {
 			scanf("%lf", a);
+		}		if (a==c) {
+			printf("%lf", b);			continue;
+		} else {
+			printf("%lf", c);
 		}
 	}
 	if (l2!=l1) {
 		scanf("%s", l1);
 	}
-
 	switch (opcao) {		case 1:			printf("%lf", b);			break;		case 5:			scanf("%s", t1);		default:			printf("%lf", a);	}
 }

@@ -15,6 +15,8 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
     import br.com.isilanguage.ast.CommandBreak;
+    import br.com.isilanguage.ast.CommandContinue;
+    import br.com.isilanguage.ast.CommandType;
     
     import java.util.ArrayList;
     import java.util.Stack;
@@ -175,6 +177,30 @@ public class IsiLangBaseListener implements IsiLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCmdswitch(IsiLangParser.CmdswitchContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdBreak(IsiLangParser.CmdBreakContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdBreak(IsiLangParser.CmdBreakContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdContinue(IsiLangParser.CmdContinueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdContinue(IsiLangParser.CmdContinueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

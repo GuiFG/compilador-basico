@@ -43,8 +43,17 @@ programa
 
         se (t1 != t2) {
             escreva(t1);
+            parar;
         } senao {
             leia(a);
+        }
+
+        se (a == c) {
+            escreva(b);
+            continuar;
+        }
+        senao {
+            escreva(c);
         }
     }
 

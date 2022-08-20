@@ -9,5 +9,6 @@ public enum CommandType {
     SWITCH,
     ESCRITA,
     LEITURA,
-    BREAK
+    BREAK,
+    CONTINUE
 }

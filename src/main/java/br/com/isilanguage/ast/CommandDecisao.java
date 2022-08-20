@@ -43,9 +43,8 @@ public class CommandDecisao extends AbstractCommand {
             str.append("\n")
                .append(Util.getTabs(depth))
                .append("}");
-        } else {
-            str.append("\n");
         }
+        str.append("\r");
         
         
         return str.toString();
