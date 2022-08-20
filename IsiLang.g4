@@ -14,6 +14,7 @@ grammar IsiLang;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
+    import br.com.isilanguage.ast.CommandBreak;
     
     import java.util.ArrayList;
     import java.util.Stack;
@@ -351,6 +352,7 @@ cmdswitch : 'escolha'
                 } 
                 
                 (cmd)+ 
+                ('parar' { CommandBreak cmdBreak = new CommandBreak(); stack.peek().add(cmdBreak); }  SC)? 
             )+ 
             'outrocaso' { stackCaseTerms.push("outrocaso"); }
             DP {
@@ -433,6 +435,6 @@ NUMBER  : [0-9]+ ('.' [0-9]+)?
 TEXT : ["] ([a-zA-Z0-9.,!?$%#@&*() ])* ["] 
      ;
 
-BOOL : 'verdadeiro' | 'falso'; 
+BOOL : 'verdadeiro' | 'falso';       
     
 WS : (' ' | '\t' | '\n' | '\r') -> skip;

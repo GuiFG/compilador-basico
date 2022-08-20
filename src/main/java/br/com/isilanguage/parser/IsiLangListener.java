@@ -14,6 +14,7 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandDecisao; 
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
+    import br.com.isilanguage.ast.CommandBreak;
     
     import java.util.ArrayList;
     import java.util.Stack;

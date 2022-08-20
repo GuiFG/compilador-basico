@@ -56,6 +56,7 @@ programa
     {
         caso 1:
             escreva(b);
+            parar;
         caso 5:
             leia(t1);
         outrocaso:

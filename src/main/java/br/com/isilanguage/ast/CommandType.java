@@ -8,5 +8,6 @@ public enum CommandType {
     REPETICAO,
     SWITCH,
     ESCRITA,
-    LEITURA
+    LEITURA,
+    BREAK
 }

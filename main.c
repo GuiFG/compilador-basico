@@ -46,5 +46,5 @@ int main(){
 		scanf("%s", l1);
 	}
 
-	switch (opcao) {		case 1:			printf("%lf", b);		case 5:			scanf("%s", t1);		case outrocaso:			printf("%lf", a);	}
+	switch (opcao) {		case 1:			printf("%lf", b);			break;		case 5:			scanf("%s", t1);		default:			printf("%lf", a);	}
 }
