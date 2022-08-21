@@ -32,20 +32,7 @@ public class CommandSwitch extends AbstractCommand {
         
         String blocoCases = getBlocoCases();
         str.append(blocoCases);
-        str.append(Util.getTabs(depth-1)).append("}");
-        
-        /*       
-        switch(expression) {
-            case x:
-              // code block
-              break;
-            case y:
-              // code block
-              break;
-            default:
-              // code block
-        }
-        */
+        str.append(Util.getTabs(depth-1)).append("}\r");
         
         return str.toString();
     }

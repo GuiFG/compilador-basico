@@ -12,6 +12,7 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandEscrita;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
+    import br.com.isilanguage.ast.CommandEnquanto;
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
     import br.com.isilanguage.ast.CommandBreak;
@@ -153,6 +154,18 @@ public class IsiLangBaseListener implements IsiLangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCmdselecao(IsiLangParser.CmdselecaoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCmdenquanto(IsiLangParser.CmdenquantoContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCmdenquanto(IsiLangParser.CmdenquantoContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

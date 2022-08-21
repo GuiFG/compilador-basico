@@ -6,6 +6,8 @@ int main(){
 	double c;
 	bool l1;
 	bool l2;
+	double i;
+	double j;
 	char t1[];
 	char t2[];
 	scanf("%lf", a);
@@ -47,4 +49,17 @@ int main(){
 		scanf("%s", l1);
 	}
 	switch (opcao) {		case 1:			printf("%lf", b);			break;		case 5:			scanf("%s", t1);		default:			printf("%lf", a);	}
+	for (int i = 3; i <= 27; i += 5) {
+		printf("%lf", c);		if (a==c) {
+			printf("%lf", b);			continue;
+		} else {
+			printf("%lf", c);
+		}		for (int j = 3; j <= 27; j += 5) {
+			printf("%lf", a);			if (a==b) {
+				continue;
+			} else {
+				printf("%lf", b);				break;
+			}			scanf("%lf", c);
+		}
+	}
 }

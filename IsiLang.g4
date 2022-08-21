@@ -12,6 +12,7 @@ grammar IsiLang;
     import br.com.isilanguage.ast.CommandEscrita;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
+    import br.com.isilanguage.ast.CommandEnquanto;
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
     import br.com.isilanguage.ast.CommandBreak;
@@ -49,6 +50,10 @@ grammar IsiLang;
     private ArrayList<AbstractCommand> loopCommands;
     private Boolean _breakOk = false;
     private Boolean _continueOk = false;
+
+    private String forStart;
+    private String forEnd;
+    private String forStep;
 
     private String caseExpression;
     private int countCase = 0;
@@ -227,6 +232,7 @@ cmd     :
     | cmdescrita 
     | cmdattrib 
     | cmdselecao
+    | cmdenquanto
     | cmdrepeticao
     | cmdswitch
     | cmdBreak
@@ -315,7 +321,7 @@ cmdselecao : 'se' AP { typeVar1 = -1; typeVar2 = -1; }
             }
            ;
 
-cmdrepeticao : 'enquanto' 
+cmdenquanto : 'enquanto' 
                 AP { typeVar1 = -1; typeVar2 = -1; _breakOk = true; _continueOk = true; }
                 termo { 
                     String text = _input.LT(-1).getText(); 
@@ -342,7 +348,7 @@ cmdrepeticao : 'enquanto'
                 {
                     loopCommands = stack.pop();
                     _exprLoop = stackLoop.pop();
-                    CommandRepeticao cmd = new CommandRepeticao(_exprLoop, loopCommands, depth);
+                    CommandEnquanto cmd = new CommandEnquanto(_exprLoop, loopCommands, depth);
                     stack.peek().add(cmd);
                     loopCommands = null;
                     depth -= 1;
@@ -350,6 +356,32 @@ cmdrepeticao : 'enquanto'
                     _continueOk = false;
                 }
                 ;
+
+
+cmdrepeticao: 'para' ID { _exprLoop = _input.LT(-1).getText();  checkId(_exprLoop); } 
+                'de' NUMBER { forStart = _input.LT(-1).getText(); }
+                'ate' NUMBER { forEnd = _input.LT(-1).getText(); }
+                'passo' NUMBER { forStep = _input.LT(-1).getText(); }
+                'faca' { 
+                    depth += 1;
+                    currentThread = new ArrayList<AbstractCommand>();
+                    stack.push(currentThread);
+                    stackLoop.add(_exprLoop);
+                    _breakOk = true;
+                    _continueOk = true;
+                }
+                (cmd)+
+                'fimpara' {
+                    loopCommands = stack.pop();
+                    _exprLoop = stackLoop.pop();
+                    CommandRepeticao cmd = new CommandRepeticao(_exprLoop, loopCommands, forStart, forEnd, forStep, depth);
+                    stack.peek().add(cmd);
+                    loopCommands = null;
+                    depth -= 1;
+                    _breakOk = false;
+                    _continueOk = false;
+                }
+            ;
 
 cmdswitch : 'escolha' 
             AP ID { 

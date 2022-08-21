@@ -23,10 +23,7 @@ public class IsiProgram {
         
         for (AbstractCommand command: commands)
         {
-            if (command.getType() != CommandType.DECISAO)
-                str.append("\t").append(command.generateCodeInC()).append("\n");
-            else 
-                str.append(command.generateCodeInC()).append("\n");
+            str.append("\t").append(command.generateCodeInC()).append("\n");    
         }
         str.append("}");
         

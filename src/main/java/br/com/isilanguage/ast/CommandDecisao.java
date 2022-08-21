@@ -29,8 +29,7 @@ public class CommandDecisao extends AbstractCommand {
     @Override
     public String generateCodeInC() {
         StringBuilder str = new StringBuilder();
-        str.append(Util.getTabs(depth))
-           .append("if (").append(condition)
+        str.append("if (").append(condition)
            .append(") {\n");
         
         str.append(AppendCommands(lstTrue));
@@ -53,12 +52,7 @@ public class CommandDecisao extends AbstractCommand {
     private String AppendCommands(ArrayList<AbstractCommand> list) {
         StringBuilder str = new StringBuilder();
         for (AbstractCommand cmd: list) {
-            if (cmd.getType() != CommandType.DECISAO)
-                str.append(Util.getTabs(depth+1)).append(cmd.generateCodeInC());
-            else {
-                str.append(cmd.generateCodeInC());
-            }
-                
+            str.append(Util.getTabs(depth+1)).append(cmd.generateCodeInC());
         }
         
         return str.toString();
