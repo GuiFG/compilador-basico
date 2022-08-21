@@ -8,9 +8,16 @@ public class IsiSemanticException extends RuntimeException {
     }
     
     public static void showWarning(Warning warning, String name) {
+        System.out.println(getWarning(warning, name));
+    }
+    
+    public static String getWarning(Warning warning, String name) {
+        String message;
         if (warning == Warning.UNASSIGNED_VARIABLE)
-            System.out.println("WARNING: Variavel '" + name + "' declarada e não utilizada");
+            message = "WARNING: Variavel '" + name + "' declarada e não utilizada";
         else 
-            System.out.println("WARNING: " + name);
+            message = "WARNING: " + name;
+        
+        return message;
     }
 }

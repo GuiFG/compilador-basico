@@ -180,14 +180,18 @@ grammar IsiLang;
         return cases;
     }
 
-    public void checkWarnings() {
+    public ArrayList<String> getWarnings() {
+        ArrayList<String> warnings = new ArrayList<String>();
         for (IsiSymbol symbol : symbolTable.getAll()) {
             IsiVariable var = (IsiVariable) symbol;
             String value = var.getValue();
             if (value == null) {
-                IsiSemanticException.showWarning(Warning.UNASSIGNED_VARIABLE, var.getName());
+                String warn = IsiSemanticException.getWarning(Warning.UNASSIGNED_VARIABLE, var.getName());
+                warnings.add(warn);
             } 
         };
+
+        return warnings;
     }
 
     public void showCommands() {

@@ -2,7 +2,9 @@ package br.com.isilanguage.compiladorapi.controller;
 
 import br.com.isilanguage.compiladorapi.model.Codigo;
 import br.com.isilanguage.compiladorapi.model.Resposta;
+import br.com.isilanguage.datastructures.Tuple;
 import br.com.isilanguage.main.MainClass;
+import java.util.ArrayList;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,9 +23,9 @@ public class CompiladorController {
         {
             String code = codigo.codigo;
         
-            String message = MainClass.run(CharStreams.fromString(code));
+            Tuple<String, ArrayList<String>> resultado = MainClass.run(CharStreams.fromString(code));
 
-            Resposta resposta = new Resposta(message, null);
+            Resposta resposta = new Resposta(resultado.getE1(), resultado.getE2());
 
             return resposta;
         }
