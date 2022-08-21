@@ -19,11 +19,21 @@ public class CommandLeitura extends AbstractCommand {
     }
 
     @Override
-    public String generateCodeInC() {
-        String format = var.getType() == IsiVariable.NUMBER ? "%lf" : "%s";
+    public String generateCodeInCpp() {
+        return "cin >> " + id + ";\r"; 
+    }
+    
+    @Override
+    public String generateCodeInJava() {
+        String leitor = switch (var.getType()) {
+            case IsiVariable.NUMBER -> "nextDouble()";
+            case IsiVariable.TEXT -> "nextLine()";
+            case IsiVariable.BOOL -> "next()";
+            default -> "tipo desconhecido" ;
+        };
         
-        return "scanf(\"" + format + "\", " + id + ");\r";
-   }
+        return id + " = scanner." + leitor + ";\r";
+    }
     
     @Override
     public CommandType getType() {

@@ -9,7 +9,8 @@ public class CommandRepeticao extends AbstractCommand {
     private final String inicio;
     private final String fim;
     private final String passo;
-    private int depth;
+    private final int depth;
+    private final int depthJava;
     
     public CommandRepeticao(
             String expressao, 
@@ -25,6 +26,7 @@ public class CommandRepeticao extends AbstractCommand {
         this.fim = fim;
         this.passo = passo;
         this.depth = depth;
+        this.depthJava = depth + 1;
     }
     
     @Override
@@ -34,7 +36,7 @@ public class CommandRepeticao extends AbstractCommand {
     }
 
     @Override
-    public String generateCodeInC() {
+    public String generateCodeInCpp() {
         StringBuilder str = new StringBuilder();
         
         str.append("for (int ")
@@ -46,7 +48,7 @@ public class CommandRepeticao extends AbstractCommand {
             .append(" += ").append(passo)
             .append(") {\n");
         
-        str.append(AppendCommands(lstCommands));
+        str.append(AppendCommandsCpp(lstCommands));
         str.append("\n")
            .append(Util.getTabs(depth))
            .append("}\r");
@@ -54,12 +56,44 @@ public class CommandRepeticao extends AbstractCommand {
         return str.toString();
     }
     
-    private String AppendCommands(ArrayList<AbstractCommand> list) {
+    @Override
+    public String generateCodeInJava() {
+        StringBuilder str = new StringBuilder();
+        
+        str.append("for (")
+            .append(expressao)
+            .append(" = ").append(inicio)
+            .append("; ").append(expressao)
+            .append(" <= ").append(fim)
+            .append("; ").append(expressao)
+            .append(" += ").append(passo)
+            .append(") {\n");
+        
+        str.append(AppendCommandsJava(lstCommands));
+        str.append("\n")
+           .append(Util.getTabs(depthJava))
+           .append("}\r");
+        
+        return str.toString();
+    }
+    
+    private String AppendCommandsCpp(ArrayList<AbstractCommand> list) {
         StringBuilder str = new StringBuilder();
         
         for (AbstractCommand cmd: list) {
             str.append(Util.getTabs(depth + 1));
-            str.append(cmd.generateCodeInC());
+            str.append(cmd.generateCodeInCpp());
+        }
+        
+        return str.toString();
+    }
+    
+    private String AppendCommandsJava(ArrayList<AbstractCommand> list) {
+        StringBuilder str = new StringBuilder();
+        
+        for (AbstractCommand cmd: list) {
+            str.append(Util.getTabs(depthJava + 1));
+            str.append(cmd.generateCodeInJava());
         }
         
         return str.toString();

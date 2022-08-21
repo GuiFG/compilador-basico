@@ -17,11 +17,15 @@ public class CommandEscrita extends AbstractCommand {
     }
 
     @Override
-    public String generateCodeInC() {
-        String format = var.getType() == IsiVariable.NUMBER ? "%lf" : "%s";
-        
-        return "printf(\"" + format + "\", " + id + ");\r";
+    public String generateCodeInCpp() {
+        return "cout << " + id + ";\r";
     }
+    
+    @Override
+    public String generateCodeInJava() {
+        return "System.out.println(" + id + ");\r";
+    }
+    
     @Override
     public CommandType getType() {
         return CommandType.ESCRITA;

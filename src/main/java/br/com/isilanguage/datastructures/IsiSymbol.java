@@ -3,7 +3,8 @@ package br.com.isilanguage.datastructures;
 public abstract class IsiSymbol {
     protected String name;
     
-    public abstract String generateCodeInC();
+    public abstract String generateCodeInCpp();
+    public abstract String generateCodeInJava();
     
     public IsiSymbol(String name) {
         this.name = name;

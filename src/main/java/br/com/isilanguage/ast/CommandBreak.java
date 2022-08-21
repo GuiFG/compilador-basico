@@ -4,7 +4,12 @@ package br.com.isilanguage.ast;
 public class CommandBreak extends AbstractCommand {
 
     @Override
-    public String generateCodeInC() {
+    public String generateCodeInCpp() {
+        return "break;\r";
+    }
+    
+    @Override
+    public String generateCodeInJava() {
         return "break;\r";
     }
 

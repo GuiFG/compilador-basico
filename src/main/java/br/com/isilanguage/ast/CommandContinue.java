@@ -4,7 +4,12 @@ package br.com.isilanguage.ast;
 public class CommandContinue extends AbstractCommand {
 
     @Override
-    public String generateCodeInC() {
+    public String generateCodeInCpp() {
+        return "continue;\r";
+    }
+    
+    @Override
+    public String generateCodeInJava() {
         return "continue;\r";
     }
 
