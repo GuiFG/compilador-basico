@@ -5,6 +5,7 @@ programa
     logico l1;
     logico l2;
     numero opcao;
+    numero i, j;
 
     leia(a);
     leia(b);
@@ -43,8 +44,17 @@ programa
 
         se (t1 != t2) {
             escreva(t1);
+            parar;
         } senao {
             leia(a);
+        }
+
+        se (a == c) {
+            escreva(b);
+            continuar;
+        }
+        senao {
+            escreva(c);
         }
     }
 
@@ -56,10 +66,38 @@ programa
     {
         caso 1:
             escreva(b);
+            parar;
         caso 5:
             leia(t1);
         outrocaso:
             escreva(a);
     }
+
+    para i de 0 ate 10 passo 2 faca
+        escreva(c);
+
+        se (a == c) {
+            escreva(b);
+            continuar;
+        }
+        senao {
+            escreva(c);
+        }
+
+        para j de 3 ate 27 passo 5 faca
+            escreva(a);
+
+            se (a==b) {
+                continuar;
+            }
+            senao {
+                escreva(b);
+                parar;
+            }
+
+            leia(c);
+        fimpara
+        
+    fimpara
 
 fimprog;

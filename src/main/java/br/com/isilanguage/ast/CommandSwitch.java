@@ -32,20 +32,7 @@ public class CommandSwitch extends AbstractCommand {
         
         String blocoCases = getBlocoCases();
         str.append(blocoCases);
-        str.append(Util.getTabs(depth-1)).append("}");
-        
-        /*       
-        switch(expression) {
-            case x:
-              // code block
-              break;
-            case y:
-              // code block
-              break;
-            default:
-              // code block
-        }
-        */
+        str.append(Util.getTabs(depth-1)).append("}\r");
         
         return str.toString();
     }
@@ -54,9 +41,15 @@ public class CommandSwitch extends AbstractCommand {
         StringBuilder str = new StringBuilder();
         for (Map.Entry<String, ArrayList<AbstractCommand>> set :
              cases.entrySet()) {
- 
-            str.append(Util.getTabs(depth))
-               .append("case ").append(set.getKey()).append(":\r");
+            str.append(Util.getTabs(depth));
+            
+            String key = set.getKey();
+            if (!key.equals("outrocaso"))
+                str.append("case ").append(key);
+            else 
+                str.append("default");
+            str.append(":\r");
+               
             str.append(AppendCommands(set.getValue()));
         }
         
@@ -65,9 +58,9 @@ public class CommandSwitch extends AbstractCommand {
     
     private String AppendCommands(ArrayList<AbstractCommand> list) {
         StringBuilder str = new StringBuilder();
-        str.append(Util.getTabs(depth + 1));
         for (AbstractCommand cmd: list) {
-             str.append(cmd.generateCodeInC());
+             str.append(Util.getTabs(depth + 1))
+                .append(cmd.generateCodeInC());
         }
         
         return str.toString();

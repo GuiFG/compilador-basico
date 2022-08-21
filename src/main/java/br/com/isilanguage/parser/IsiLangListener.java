@@ -12,8 +12,12 @@ package br.com.isilanguage.parser;
     import br.com.isilanguage.ast.CommandEscrita;
     import br.com.isilanguage.ast.CommandAtribuicao;
     import br.com.isilanguage.ast.CommandDecisao; 
+    import br.com.isilanguage.ast.CommandEnquanto;
     import br.com.isilanguage.ast.CommandRepeticao;
     import br.com.isilanguage.ast.CommandSwitch;
+    import br.com.isilanguage.ast.CommandBreak;
+    import br.com.isilanguage.ast.CommandContinue;
+    import br.com.isilanguage.ast.CommandType;
     
     import java.util.ArrayList;
     import java.util.Stack;
@@ -127,6 +131,16 @@ public interface IsiLangListener extends ParseTreeListener {
 	 */
 	void exitCmdselecao(IsiLangParser.CmdselecaoContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdenquanto}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdenquanto(IsiLangParser.CmdenquantoContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdenquanto}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdenquanto(IsiLangParser.CmdenquantoContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#cmdrepeticao}.
 	 * @param ctx the parse tree
 	 */
@@ -146,6 +160,26 @@ public interface IsiLangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCmdswitch(IsiLangParser.CmdswitchContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdBreak}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdBreak(IsiLangParser.CmdBreakContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdBreak}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdBreak(IsiLangParser.CmdBreakContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link IsiLangParser#cmdContinue}.
+	 * @param ctx the parse tree
+	 */
+	void enterCmdContinue(IsiLangParser.CmdContinueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link IsiLangParser#cmdContinue}.
+	 * @param ctx the parse tree
+	 */
+	void exitCmdContinue(IsiLangParser.CmdContinueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link IsiLangParser#expr}.
 	 * @param ctx the parse tree

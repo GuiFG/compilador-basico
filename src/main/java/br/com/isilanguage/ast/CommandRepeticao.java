@@ -4,32 +4,47 @@ import java.util.ArrayList;
 import br.com.isilanguage.utils.Util;
 
 public class CommandRepeticao extends AbstractCommand {
-    private final String condition;
+    private final String expressao;
     private final ArrayList<AbstractCommand> lstCommands;
+    private final String inicio;
+    private final String fim;
+    private final String passo;
     private int depth;
     
     public CommandRepeticao(
-            String condition, 
+            String expressao, 
             ArrayList<AbstractCommand> lstCommands,
+            String inicio,
+            String fim,
+            String passo,
             int depth
     ) {
-        this.condition = condition;
+        this.expressao = expressao;
         this.lstCommands = lstCommands;
+        this.inicio = inicio;
+        this.fim = fim;
+        this.passo = passo;
         this.depth = depth;
     }
     
     @Override
     public String toString() {
-        return "CommandRepeticao{" + "condition=" + condition + ", lstCommands=" + lstCommands + '}';
+        return "CommandRepeticao{" + "expressao=" + expressao + ", lstCommands=" + lstCommands + 
+                "inicio=" + inicio + ", fim=" + fim + ", passo=" + passo + '}';
     }
 
     @Override
     public String generateCodeInC() {
         StringBuilder str = new StringBuilder();
         
-        str.append("while (").append(condition)
-           .append(") {")
-           .append("\n");
+        str.append("for (int ")
+            .append(expressao)
+            .append(" = ").append(inicio)
+            .append("; ").append(expressao)
+            .append(" <= ").append(fim)
+            .append("; ").append(expressao)
+            .append(" += ").append(passo)
+            .append(") {\n");
         
         str.append(AppendCommands(lstCommands));
         str.append("\n")
@@ -41,9 +56,10 @@ public class CommandRepeticao extends AbstractCommand {
     
     private String AppendCommands(ArrayList<AbstractCommand> list) {
         StringBuilder str = new StringBuilder();
-        str.append(Util.getTabs(depth + 1));
+        
         for (AbstractCommand cmd: list) {
-             str.append(cmd.generateCodeInC());
+            str.append(Util.getTabs(depth + 1));
+            str.append(cmd.generateCodeInC());
         }
         
         return str.toString();
