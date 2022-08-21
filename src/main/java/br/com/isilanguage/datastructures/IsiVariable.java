@@ -37,10 +37,10 @@ public class IsiVariable extends IsiSymbol {
     }
 
     @Override
-    public String generateCodeInC() {
+    public String generateCodeInCpp() {
         String str = switch (type) {
             case IsiVariable.NUMBER -> "double " + super.name;
-            case IsiVariable.TEXT -> "char " + super.name + "[]";
+            case IsiVariable.TEXT -> "string " + super.name;
             case IsiVariable.BOOL -> "bool " + super.name;
             default -> "tipo desconhecido " + type;
         };

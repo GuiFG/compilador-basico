@@ -25,7 +25,7 @@ public class CommandSwitch extends AbstractCommand {
     }
 
     @Override
-    public String generateCodeInC() {
+    public String generateCodeInCpp() {
         StringBuilder str = new StringBuilder();
         
         str.append("switch (").append(expression).append(") {\r");
@@ -60,7 +60,7 @@ public class CommandSwitch extends AbstractCommand {
         StringBuilder str = new StringBuilder();
         for (AbstractCommand cmd: list) {
              str.append(Util.getTabs(depth + 1))
-                .append(cmd.generateCodeInC());
+                .append(cmd.generateCodeInCpp());
         }
         
         return str.toString();

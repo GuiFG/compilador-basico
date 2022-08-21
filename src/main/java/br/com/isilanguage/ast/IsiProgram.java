@@ -13,34 +13,41 @@ public class IsiProgram {
     private String programName;
     
     public void generateTarget() {
-        StringBuilder str = new StringBuilder();
-        str.append("#include <stdio.h>\n");
-        str.append("int main(){\n");
-        for (IsiSymbol symbol: varTable.getAll())
-        {
-            str.append("\t").append(symbol.generateCodeInC()).append("\n");
-        }
         
-        for (AbstractCommand command: commands)
-        {
-            str.append("\t").append(command.generateCodeInC()).append("\n");    
-        }
-        str.append("}");
-        
+        String codeCpp = generateCodeInCpp();
         try 
         {
-            WriteCodeInFile(str.toString());
+            WriteCodeInFile(codeCpp, "cpp");
         }
         catch (IOException ex)
         {
             System.out.println("ERROR: Write Code In File. " + ex.getMessage());
         }
-        
     }
     
-    private static void WriteCodeInFile(String code) throws IOException
+    private String generateCodeInCpp()
     {
-        try (FileWriter fr = new FileWriter(new File("main.c"))) {
+        StringBuilder str = new StringBuilder();
+        str.append("#include <iostream>\n")
+           .append("using namespace std;\n");
+        str.append("int main(){\n");
+        for (IsiSymbol symbol: varTable.getAll())
+        {
+            str.append("\t").append(symbol.generateCodeInCpp()).append("\n");
+        }
+        
+        for (AbstractCommand command: commands)
+        {
+            str.append("\t").append(command.generateCodeInCpp()).append("\n");    
+        }
+        str.append("}");
+        
+        return str.toString();
+    }
+    
+    private static void WriteCodeInFile(String code, String extension) throws IOException
+    {
+        try (FileWriter fr = new FileWriter(new File("main." + extension))) {
                 fr.write(code);
             }
     }
@@ -68,6 +75,4 @@ public class IsiProgram {
     public void setProgramName(String programName) {
         this.programName = programName;
     }
-    
-    
 }

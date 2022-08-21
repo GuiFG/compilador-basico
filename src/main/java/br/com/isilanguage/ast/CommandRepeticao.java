@@ -34,7 +34,7 @@ public class CommandRepeticao extends AbstractCommand {
     }
 
     @Override
-    public String generateCodeInC() {
+    public String generateCodeInCpp() {
         StringBuilder str = new StringBuilder();
         
         str.append("for (int ")
@@ -59,7 +59,7 @@ public class CommandRepeticao extends AbstractCommand {
         
         for (AbstractCommand cmd: list) {
             str.append(Util.getTabs(depth + 1));
-            str.append(cmd.generateCodeInC());
+            str.append(cmd.generateCodeInCpp());
         }
         
         return str.toString();
