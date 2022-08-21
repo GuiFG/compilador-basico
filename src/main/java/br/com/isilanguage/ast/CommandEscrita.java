@@ -20,6 +20,12 @@ public class CommandEscrita extends AbstractCommand {
     public String generateCodeInCpp() {
         return "cout << " + id + ";\r";
     }
+    
+    @Override
+    public String generateCodeInJava() {
+        return "System.out.println(" + id + ");\r";
+    }
+    
     @Override
     public CommandType getType() {
         return CommandType.ESCRITA;

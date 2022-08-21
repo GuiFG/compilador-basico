@@ -7,6 +7,11 @@ public class CommandContinue extends AbstractCommand {
     public String generateCodeInCpp() {
         return "continue;\r";
     }
+    
+    @Override
+    public String generateCodeInJava() {
+        return "continue;\r";
+    }
 
     @Override
     public CommandType getType() {

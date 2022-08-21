@@ -47,4 +47,16 @@ public class IsiVariable extends IsiSymbol {
 	        
         return str + ";";
     }
+    
+    @Override
+    public String generateCodeInJava() {
+        String str = switch (type) {
+            case IsiVariable.NUMBER -> "double " + super.name;
+            case IsiVariable.TEXT -> "String " + super.name;
+            case IsiVariable.BOOL -> "boolean " + super.name;
+            default -> "tipo desconhecido " + type;
+        };
+	        
+        return str + ";";
+    }
 }

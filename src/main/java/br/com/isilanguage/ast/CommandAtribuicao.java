@@ -19,6 +19,11 @@ public class CommandAtribuicao extends AbstractCommand {
     public String generateCodeInCpp() {
         return id + " = " + expr + ";";
     }
+    
+    @Override
+    public String generateCodeInJava() {
+        return id + " = " + expr + ";";
+    }
 
     @Override
     public CommandType getType() {

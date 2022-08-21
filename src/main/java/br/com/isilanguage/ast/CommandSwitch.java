@@ -9,7 +9,7 @@ import br.com.isilanguage.utils.Util;
 public class CommandSwitch extends AbstractCommand {
     private final String expression;
     private final HashMap<String, ArrayList<AbstractCommand>> cases;
-    private int depth = 2;
+    private final int depth = 2;
     
     public CommandSwitch(
         String expression, 
@@ -30,18 +30,36 @@ public class CommandSwitch extends AbstractCommand {
         
         str.append("switch (").append(expression).append(") {\r");
         
-        String blocoCases = getBlocoCases();
+        String blocoCases = getBlocoCases("cpp");
         str.append(blocoCases);
         str.append(Util.getTabs(depth-1)).append("}\r");
         
         return str.toString();
     }
     
-    private String getBlocoCases() {
+    @Override
+    public String generateCodeInJava() {
+        StringBuilder str = new StringBuilder();
+        
+        str.append("switch (").append(expression).append(") {\r");
+        
+        String blocoCases = getBlocoCases("java");
+        str.append(blocoCases);
+        str.append(Util.getTabs(depth)).append("}\r");
+        
+        return str.toString();
+    }
+    
+    private String getBlocoCases(String type) {
+        int profundidade = depth;
+        if (type.equals("java"))
+            profundidade += 1;
+        
         StringBuilder str = new StringBuilder();
         for (Map.Entry<String, ArrayList<AbstractCommand>> set :
              cases.entrySet()) {
-            str.append(Util.getTabs(depth));
+            
+            str.append(Util.getTabs(profundidade));
             
             String key = set.getKey();
             if (!key.equals("outrocaso"))
@@ -50,17 +68,30 @@ public class CommandSwitch extends AbstractCommand {
                 str.append("default");
             str.append(":\r");
                
-            str.append(AppendCommands(set.getValue()));
+            if (type.equals("cpp"))
+                str.append(AppendCommandsCpp(set.getValue()));
+            else if (type.equals("java"))
+                str.append(AppendCommandsJava(set.getValue()));
         }
         
         return str.toString();
     }
     
-    private String AppendCommands(ArrayList<AbstractCommand> list) {
+    private String AppendCommandsCpp(ArrayList<AbstractCommand> list) {
         StringBuilder str = new StringBuilder();
         for (AbstractCommand cmd: list) {
              str.append(Util.getTabs(depth + 1))
                 .append(cmd.generateCodeInCpp());
+        }
+        
+        return str.toString();
+    }
+    
+    private String AppendCommandsJava(ArrayList<AbstractCommand> list) {
+        StringBuilder str = new StringBuilder();
+        for (AbstractCommand cmd: list) {
+             str.append(Util.getTabs(depth + 2))
+                .append(cmd.generateCodeInJava());
         }
         
         return str.toString();
