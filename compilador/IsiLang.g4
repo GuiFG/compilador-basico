@@ -253,7 +253,7 @@ cmdleitura : 'leia' AP
                     }
            ;
 cmdescrita : 'escreva' AP 
-                       ID { _writeID = _input.LT(-1).getText(); checkId(_writeID); } 
+                       (ID { _writeID = _input.LT(-1).getText(); checkId(_writeID); } | TEXT { _writeID = _input.LT(-1).getText(); }) 
                        FP 
                        SC {
                             IsiVariable var =  (IsiVariable)symbolTable.get(_writeID);
