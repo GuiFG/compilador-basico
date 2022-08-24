@@ -28,6 +28,7 @@ grammar IsiLang;
     private int _tipo;
     private String _varName;
     private String _varValue;
+    private IsiVariable _lastVar;
     
     private String _readID;
     private String _writeID;
@@ -65,11 +66,12 @@ grammar IsiLang;
     private ArrayList<AbstractCommand> currentThread = new ArrayList<AbstractCommand>();
     private Stack<ArrayList<AbstractCommand>> stack = new Stack<ArrayList<AbstractCommand>>();
 
-    private void addSymbol(String name) {
+    private void addSymbol(String name, Boolean inline) {
         _varName = name;
         _varValue = null;
-        symbol = new IsiVariable(_varName, _tipo, _varValue);
-        
+        _lastVar = new IsiVariable(_varName, _tipo, _varValue, inline);
+        symbol = _lastVar;
+
         if (!symbolTable.exists(_varName)) {
             symbolTable.add(symbol);
             System.out.println("Simbolo adicionado " + symbol);
@@ -200,8 +202,8 @@ grammar IsiLang;
         }
     }
 
-    public void generateCode() {
-        program.generateTarget();
+    public void generateCode(String fileName) {
+        program.generateTarget(fileName);
     }
 }
 
@@ -215,10 +217,10 @@ prog    : 'programa' decl bloco 'fimprog;'
 decl    : (declaravar)+
         ;
 
-declaravar : tipo ID { addSymbol(_input.LT(-1).getText()); }    
+declaravar : tipo ID { addSymbol(_input.LT(-1).getText(), false); }    
             ( VIR 
-              ID { addSymbol(_input.LT(-1).getText()); }
-            )* SC
+              ID { addSymbol(_input.LT(-1).getText(), true); }
+            )* SC { if (_lastVar != null) _lastVar.setLast(true); }
            ;
 
 tipo    : 'numero' { _tipo = IsiVariable.NUMBER; }
@@ -253,7 +255,7 @@ cmdleitura : 'leia' AP
                     }
            ;
 cmdescrita : 'escreva' AP 
-                       ID { _writeID = _input.LT(-1).getText(); checkId(_writeID); } 
+                       (ID { _writeID = _input.LT(-1).getText(); checkId(_writeID); } | TEXT { _writeID = _input.LT(-1).getText(); }) 
                        FP 
                        SC {
                             IsiVariable var =  (IsiVariable)symbolTable.get(_writeID);

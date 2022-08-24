@@ -2,6 +2,7 @@ package br.com.isilanguage.ast;
 
 import br.com.isilanguage.datastructures.IsiSymbol;
 import br.com.isilanguage.datastructures.IsiSymbolTable;
+import br.com.isilanguage.datastructures.IsiVariable;
 import br.com.isilanguage.utils.Util;
 import java.io.File;
 import java.io.FileWriter;
@@ -13,14 +14,14 @@ public class IsiProgram {
     private ArrayList<AbstractCommand> commands;
     private String programName;
     
-    public void generateTarget() {
+    public void generateTarget(String fileName) {
         
         String codeCpp = generateCodeInCpp();
         String codeJava = generateCodeInJava();
         try 
         {
-            WriteCodeInFile(codeCpp, "cpp");
-            WriteCodeInFile(codeJava, "java");
+            WriteCodeInFile(codeCpp, fileName, "cpp");
+            WriteCodeInFile(codeJava, fileName, "java");
         }
         catch (IOException ex)
         {
@@ -34,9 +35,18 @@ public class IsiProgram {
         str.append("#include <iostream>\n")
            .append("using namespace std;\n");
         str.append("int main(){\n");
+        str.append("\t");
+        
+        int count = 0;
+        int total = varTable.getAll().size();
         for (IsiSymbol symbol: varTable.getAll())
         {
-            str.append("\t").append(symbol.generateCodeInCpp()).append("\n");
+            str.append(symbol.generateCodeInCpp());
+            IsiVariable var = (IsiVariable) symbol;
+            if (var.getLast() && (count + 1) != total)
+                str.append("\t");
+            
+            count += 1;
         }
         
         for (AbstractCommand command: commands)
@@ -64,9 +74,17 @@ public class IsiProgram {
         if (existsLeitura)
             str.append(tabs).append("Scanner scanner = new Scanner(System.in);\n");
         
+        str.append(tabs);
+        int count = 0;
+        int total = varTable.getAll().size();
         for (IsiSymbol symbol: varTable.getAll())
         {
-            str.append(tabs).append(symbol.generateCodeInJava()).append("\n");
+            str.append(symbol.generateCodeInJava());
+            IsiVariable var = (IsiVariable) symbol;
+            if (var.getLast() && (count + 1) != total)
+                str.append(tabs);
+            
+            count += 1;
         }
         
         for (AbstractCommand command: commands)
@@ -79,9 +97,9 @@ public class IsiProgram {
         return str.toString();
     }
     
-    private static void WriteCodeInFile(String code, String extension) throws IOException
+    private static void WriteCodeInFile(String code, String fileName, String extension) throws IOException
     {
-        try (FileWriter fr = new FileWriter(new File("main." + extension))) {
+        try (FileWriter fr = new FileWriter(new File(fileName + "." + extension))) {
                 fr.write(code);
             }
     }

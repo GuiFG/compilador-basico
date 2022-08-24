@@ -1,0 +1,24 @@
+programa
+    numero a, b, c, d;
+
+    escreva("Programa Teste");
+    escreva("Digite A");
+    leia(a);
+    escreva("Digite B");
+    leia(b);
+
+    se (a < b) {
+        c = a + b;
+    } senao {
+        c = a - b;
+    }
+
+    escreva("C e igual a ");
+    escreva(c);
+
+    d = c * a + b; 
+
+    escreva("D e igual a ");
+    escreva(d);
+
+fimprog;
