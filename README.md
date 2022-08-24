@@ -19,7 +19,7 @@ Projeto desenvolvido na disciplina Compiladores no curso de CiÃªncia da ComputaÃ
 	</tr>
 	<tr>
 		<td>Jacqueline Coelho Marinho</td>
-		<td>112018122013</td>
+		<td>11201812013</td>
 	</tr>
 	</tbody>
 </table>
