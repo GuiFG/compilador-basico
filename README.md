@@ -21,6 +21,10 @@ Projeto desenvolvido na disciplina Compiladores no curso de CiÃªncia da ComputaÃ
 		<td>Jacqueline Coelho Marinho</td>
 		<td>11201812013</td>
 	</tr>
+	<tr>
+		<td>Vittoria Ariel dos Santos Borotto</td>
+		<td>11201811288</td>
+	</tr>
 	</tbody>
 </table>
  
