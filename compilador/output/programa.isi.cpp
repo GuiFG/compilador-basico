@@ -1,11 +1,7 @@
 #include <iostream>
 using namespace std;
 int main(){
-	double a;
-	double b;
-	double c;
-	double d;
-	cout << "Programa Teste";
+	double a, b, c, d;	cout << "Programa Teste";
 	cout << "Digite A";
 	cin >> a;
 	cout << "Digite B";

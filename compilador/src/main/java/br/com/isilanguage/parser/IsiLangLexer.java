@@ -110,6 +110,7 @@ public class IsiLangLexer extends Lexer {
 	    private int _tipo;
 	    private String _varName;
 	    private String _varValue;
+	    private IsiVariable _lastVar;
 	    
 	    private String _readID;
 	    private String _writeID;
@@ -147,11 +148,12 @@ public class IsiLangLexer extends Lexer {
 	    private ArrayList<AbstractCommand> currentThread = new ArrayList<AbstractCommand>();
 	    private Stack<ArrayList<AbstractCommand>> stack = new Stack<ArrayList<AbstractCommand>>();
 
-	    private void addSymbol(String name) {
+	    private void addSymbol(String name, Boolean inline) {
 	        _varName = name;
 	        _varValue = null;
-	        symbol = new IsiVariable(_varName, _tipo, _varValue);
-	        
+	        _lastVar = new IsiVariable(_varName, _tipo, _varValue, inline);
+	        symbol = _lastVar;
+
 	        if (!symbolTable.exists(_varName)) {
 	            symbolTable.add(symbol);
 	            System.out.println("Simbolo adicionado " + symbol);
