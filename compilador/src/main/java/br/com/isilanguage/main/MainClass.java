@@ -45,6 +45,9 @@ public class MainClass {
      }
      
      public static Tuple<String, ArrayList<String>> run(CharStream stream, String outputFile) {
+        if (outputFile == null)
+            outputFile = "main";
+        
         String message;
         ArrayList<String> avisos = new ArrayList<>();
          try {

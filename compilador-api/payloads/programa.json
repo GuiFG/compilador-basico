@@ -1,0 +1,3 @@
+{
+	"codigo": "programa\n    numero a, b, c, d;\n\n    escreva(\"Programa Teste\");\n    escreva(\"Digite A\");\n    leia(a);\n    escreva(\"Digite B\");\n    leia(b);\n\n    se (a < b) {\n        c = a + b;\n    } senao {\n        c = a - b;\n    }\n\n    escreva(\"C e igual a \");\n    escreva(c);\n\n    d = c * a + b; \n\n    escreva(\"D e igual a \");\n    escreva(d);\n\nfimprog;"
+}

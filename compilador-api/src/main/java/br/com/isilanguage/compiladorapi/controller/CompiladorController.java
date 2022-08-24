@@ -23,7 +23,7 @@ public class CompiladorController {
         {
             String code = codigo.codigo;
         
-            Tuple<String, ArrayList<String>> resultado = MainClass.run(CharStreams.fromString(code));
+            Tuple<String, ArrayList<String>> resultado = MainClass.run(CharStreams.fromString(code), null);
 
             Resposta resposta = new Resposta(resultado.getE1(), resultado.getE2());
 
