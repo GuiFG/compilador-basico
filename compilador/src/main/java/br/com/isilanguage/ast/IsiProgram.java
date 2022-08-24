@@ -13,14 +13,14 @@ public class IsiProgram {
     private ArrayList<AbstractCommand> commands;
     private String programName;
     
-    public void generateTarget() {
+    public void generateTarget(String fileName) {
         
         String codeCpp = generateCodeInCpp();
         String codeJava = generateCodeInJava();
         try 
         {
-            WriteCodeInFile(codeCpp, "cpp");
-            WriteCodeInFile(codeJava, "java");
+            WriteCodeInFile(codeCpp, fileName, "cpp");
+            WriteCodeInFile(codeJava, fileName, "java");
         }
         catch (IOException ex)
         {
@@ -79,9 +79,9 @@ public class IsiProgram {
         return str.toString();
     }
     
-    private static void WriteCodeInFile(String code, String extension) throws IOException
+    private static void WriteCodeInFile(String code, String fileName, String extension) throws IOException
     {
-        try (FileWriter fr = new FileWriter(new File("main." + extension))) {
+        try (FileWriter fr = new FileWriter(new File(fileName + "." + extension))) {
                 fr.write(code);
             }
     }

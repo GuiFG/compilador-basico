@@ -282,8 +282,8 @@ public class IsiLangLexer extends Lexer {
 	        }
 	    }
 
-	    public void generateCode() {
-	        program.generateTarget();
+	    public void generateCode(String fileName) {
+	        program.generateTarget(fileName);
 	    }
 
 

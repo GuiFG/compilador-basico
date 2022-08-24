@@ -23,7 +23,8 @@ public class MainClass {
         ArrayList<String> fileNames = GetFileNames();
         for (String fileName: fileNames) {
             System.out.println("Compilando o programa: " + fileName);
-            System.out.println(run(CharStreams.fromFileName(fileName)));
+            var result = run(CharStreams.fromFileName("programs/" + fileName), "output/" + fileName);
+            System.out.println(result);
             System.out.println("");
         }
     }
@@ -36,14 +37,14 @@ public class MainClass {
         File[] listOfFiles = folder.listFiles();
          for (File file : listOfFiles) {
              if (file.isFile()) {
-                files.add("programs/" + file.getName());
+                files.add(file.getName());
              } 
          }
          
          return files;
      }
      
-     public static Tuple<String, ArrayList<String>> run(CharStream stream) {
+     public static Tuple<String, ArrayList<String>> run(CharStream stream, String outputFile) {
         String message;
         ArrayList<String> avisos = new ArrayList<>();
          try {
@@ -70,7 +71,7 @@ public class MainClass {
             message = "Compilation Successful!";
             
             parser.showCommands();
-            parser.generateCode();
+            parser.generateCode(outputFile);
             
             System.out.println("End!");
         } catch (IsiSemanticException ex) { 
