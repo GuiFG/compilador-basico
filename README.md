@@ -13,6 +13,14 @@ Projeto desenvolvido na disciplina Compiladores no curso de CiÃªncia da ComputaÃ
 		<td>Guilherme Ferreira Galdino</td>
 		<td>11201811063</td>
 	</tr>
+	<tr>
+		<td>Lucas de Medeiros Santos</td>
+		<td>11201811014</td>
+	</tr>
+	<tr>
+		<td>Jacqueline Coelho Marinho</td>
+		<td>11201812013</td>
+	</tr>
 	</tbody>
 </table>
  
