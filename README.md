@@ -2,6 +2,9 @@
 ## Compilador
 Projeto desenvolvido na disciplina Compiladores no curso de Ciência da Computação da UFABC.
 
+## Link Youtube
+https://www.youtube.com/watch?v=JgcVo3WscX0
+
 ## Grupo
 <table> 
 	<thead>

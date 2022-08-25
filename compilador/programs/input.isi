@@ -6,6 +6,7 @@ programa
     logico l2;
     numero opcao;
     numero i, j;
+    numero decimal;
 
     leia(a);
     leia(b);
@@ -13,6 +14,7 @@ programa
     a = 1 + 2 * 3 / b;
     t1 = "ola tudo bom" + "42";
     opcao = 3;
+    decimal = 3.565;
     escreva(a);
     escreva(b);
 
