@@ -2,11 +2,12 @@ import java.util.Scanner;
 public class Program {
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
-		double opcao;		double a, b, c;		boolean l1;		boolean l2;		double i, j;		String t1;		String t2;		a = scanner.nextDouble();
+		double opcao;		double a, b, c;		boolean l1;		boolean l2;		double i, j;		double decimal;		String t1;		String t2;		a = scanner.nextDouble();
 		b = scanner.nextDouble();
 		a = 1+2*3/b;
 		t1 = "ola tudo bom"+"42";
 		opcao = 3;
+		decimal = 3.565;
 		System.out.println(a);
 		System.out.println(b);
 		if (a>b) {

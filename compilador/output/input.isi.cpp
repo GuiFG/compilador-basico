@@ -1,11 +1,12 @@
 #include <iostream>
 using namespace std;
 int main(){
-	double opcao;	double a, b, c;	bool l1;	bool l2;	double i, j;	string t1;	string t2;	cin >> a;
+	double opcao;	double a, b, c;	bool l1;	bool l2;	double i, j;	double decimal;	string t1;	string t2;	cin >> a;
 	cin >> b;
 	a = 1+2*3/b;
 	t1 = "ola tudo bom"+"42";
 	opcao = 3;
+	decimal = 3.565;
 	cout << a;
 	cout << b;
 	if (a>b) {
